@@ -12,4 +12,5 @@
 #  user_id     :bigint           not null
 #
 class Recipe < ApplicationRecord
+  has_many :recipe_box_items
 end

@@ -1,0 +1,30 @@
+<header>
+  <nav class="primary">
+    <ul>
+      <% if signed_in? %>
+        <li>
+          <%= nav_link_to current_user.username, current_user %>
+        </li>
+        <li>
+          <%= button_to "Sign Out", session_path, method: :delete %>
+        </li>
+      <% else %>
+        <li>
+          <%= nav_link_to "Sign In", signin_path %>
+        </li>
+        <li>
+          <%= nav_link_to "Sign Up", signup_path %>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+
+  <div class="logo">
+    <%= link_to root_path do %>
+      <%# <%= image_tag("logo.svg") %>
+      <h1>RecipeNut 🥜</h1>
+    <% end %>
+  </div>
+
+  
+</header>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_20_042153) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_26_045228) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_20_042153) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "recipe_id", null: false
+    t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "recipe_box_items_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_box_items_id"], name: "index_likes_on_recipe_box_items_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "recipe_box_items", force: :cascade do |t|
+    t.bigint "recipe_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_recipe_box_items_on_recipe_id"
+    t.index ["user_id"], name: "index_recipe_box_items_on_user_id"
   end
 
   create_table "recipes", force: :cascade do |t|
@@ -32,16 +52,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_20_042153) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.string "username"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "ingredients", "recipes"
+  add_foreign_key "likes", "recipe_box_items", column: "recipe_box_items_id"
+  add_foreign_key "likes", "users"
+  add_foreign_key "recipe_box_items", "recipes"
+  add_foreign_key "recipe_box_items", "users"
   add_foreign_key "recipes", "users"
 end
